@@ -1,0 +1,32 @@
+#!/usr/bin/env bash
+
+#/ command: lytvyn:mykhailo: "abiba"
+#/ usage: rerun lytvyn:mykhailo [options]
+#/ rerun-variables: RERUN, RERUN_VERSION, RERUN_MODULES, RERUN_MODULE_DIR
+#/ option-variables: 
+
+. "$RERUN_MODULE_DIR/lib/functions.sh" "mykhailo" || { 
+  echo >&2 "Failed loading function library." ; exit 1 ; 
+}
+
+set -o errexit -o nounset -o pipefail
+
+rerun_options_parse "$@"
+
+# Command implementation
+# ----------------------
+
+# - - -
+DEFAULT_COL="\u001b[0m"
+RED_COL="\u001b[31m"
+GREEN_COL="\u001b[32m"
+
+env -0 | while IFS='=' read -r -d '' key value; do
+    printf "${RED_COL}%s${DEFAULT_COL}=${GREEN_COL}%s${DEFAULT_COL}\n" "$key" "$value"
+done
+# - - -
+
+
+# Done. Exit with last command exit status.
+exit $?
+
