@@ -1,0 +1,35 @@
+pipeline {
+    agent any
+    stages {
+        stage('Build') {
+			steps {
+				sh 'rm -rf ./devops'
+				sh 'git clone https://github.com/litvinkaa/devops.git'
+				dir('devops/app') {
+					sh 'npm i'
+				}
+			}
+        }
+
+        stage('Deploy')
+        {
+            steps {
+                dir('devops/app') {
+                    sh "JENKINS_NODE_COOKIE=dontKill nohup npm run dev &"
+                }
+            }
+        }
+    }
+
+    post {
+            always {
+                echo 'Jenkins pipeline completed'
+            }
+            success {
+                echo "Node.js app started successfully"
+            }
+            failure {
+                error('Build failed')
+            }
+        }
+}
