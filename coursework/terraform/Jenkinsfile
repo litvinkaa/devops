@@ -5,7 +5,7 @@ pipeline {
 			steps {
 				sh 'rm -rf ./devops'
 				sh 'git clone https://github.com/litvinkaa/devops.git'
-				dir('devops/app') {
+				dir('devops/coursework/app') {
 					sh 'npm i'
 				}
 			}
@@ -14,7 +14,7 @@ pipeline {
         stage('Deploy')
         {
             steps {
-                dir('devops/app') {
+                dir('devops/coursework/app') {
                     sh "JENKINS_NODE_COOKIE=dontKill nohup npm run dev &"
                 }
             }
